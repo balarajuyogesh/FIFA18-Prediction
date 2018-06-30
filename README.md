@@ -1,3 +1,7 @@
+# FIFA18- Predict
+
+1. We predict that `Brazil` is going to win the worldcup.
+
 # Data Collection
 
 1. `data/results.csv` file is obtained from [kaggle](https://www.kaggle.com/martj42/international-football-results-from-1872-to-2017)
@@ -85,7 +89,7 @@ ggplot(dataset,aes(x= goals,group=factor(goals), fill = factor(goals)))+
 
 # Simulating the worldcup
 
-1. We run 100000 iterations of the following steps
+1. We run 10000 iterations of the following steps
   * Simulate knockout games by drawing the number of goals scored by each team from their respective poisson distributions.
   * If there is a tie, We assume that teams convert penalties at similar rates `sample(c("A", "B"), 1)` This is similar to flipping a coin and checking out the luck
   * Repeat these steps until there is a champion

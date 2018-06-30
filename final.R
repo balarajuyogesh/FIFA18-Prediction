@@ -72,6 +72,8 @@ pacman::p_load(
 worldcup_results <- fread("data/results.csv", stringsAsFactors = FALSE,data.table = FALSE)
 fixtures <- read.csv("data/fixtures.csv", as.is = T)
 
+set.seed(100)
+
 #-------------Analyzing results.csv------------------
 
 head(worldcup_results)
@@ -307,7 +309,7 @@ wc_sims <- data.frame("country" = unique(c(fixtures$team, fixtures$opponent)),
 
 groups <- c("A", "B", "C", "D", "E", "F", "G", "H")
 
-nsims <- 100
+nsims <- 10000
 
 for(k in 1:nsims) {
   if(k %% 50 == 0) {
@@ -463,3 +465,30 @@ length(which(fifa$qtrs_team==1))
 length(which(fifa$semis_team==1))
 length(which(fifa$winner==1))
 
+group.colors <- c("Brazil" = "#4CAF50",
+                  "Belgium" = "#17202A",
+                  "Croatia" = "#EE2700",
+                  "Colombia" = "#85C1E9",
+                  "England" = "#3F51B5",
+                  "Portugal" = "#A93226",
+                  "Denmark" = "#F52300",
+                  "France" = "#FFE082",
+                  "Germany" = "#EF9A9A",
+                  "Japan" = "#1E88E5",
+                  "Russia" = "#EF9A9A",
+                  "Senegal" = "#FF765B",
+                  "Spain" = "#E96147",
+                  "Sweden" = "#229954",
+                  "Switzerland" = "#FC866E",
+                  "Uruguay" = "#C0392B"
+)
+ggplot(filter(fifa_data,champ >= 0.03),
+       aes(y = reorder(country,champ),x = champ,col = country)) +
+  geom_bar(stat = "identity",position = position_dodge(width = 0.1)) + coord_flip() +
+  geom_label(aes(x = champ ,label = paste0(round(champ*100),"%"))) +
+  scale_x_continuous(breaks = seq(0,1,0.01),
+                     labels = seq(0,1,0.01)*100) +
+  labs(title = "Most Likely Winner of the 2018 FIFA World Cup",
+       x = "Probability (%)",
+       y = "Team") +
+  scale_fill_manual(values = group.colors)
